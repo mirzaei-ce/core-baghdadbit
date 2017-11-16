@@ -1,0 +1,45 @@
+bin_PROGRAMS += bench/bench_baghdadbit
+BENCH_SRCDIR = bench
+BENCH_BINARY = bench/bench_baghdadbit$(EXEEXT)
+
+
+bench_bench_baghdadbit_SOURCES = \
+  bench/bench_baghdadbit.cpp \
+  bench/bench.cpp \
+  bench/bench.h \
+  bench/Examples.cpp
+
+bench_bench_baghdadbit_CPPFLAGS = $(AM_CPPFLAGS) $(BAGHDADBIT_INCLUDES) $(EVENT_CLFAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
+bench_bench_baghdadbit_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+bench_bench_baghdadbit_LDADD = \
+  $(LIBBAGHDADBIT_SERVER) \
+  $(LIBBAGHDADBIT_COMMON) \
+  $(LIBBAGHDADBIT_UNIVALUE) \
+  $(LIBBAGHDADBIT_UTIL) \
+  $(LIBBAGHDADBIT_CRYPTO) \
+  $(LIBLEVELDB) \
+  $(LIBMEMENV) \
+  $(LIBSECP256K1)
+
+if ENABLE_ZMQ
+bench_bench_baghdadbit_LDADD += $(LIBBAGHDADBIT_ZMQ) $(ZMQ_LIBS)
+endif
+
+if ENABLE_WALLET
+bench_bench_baghdadbit_LDADD += $(LIBBAGHDADBIT_WALLET)
+endif
+
+bench_bench_baghdadbit_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
+bench_bench_baghdadbit_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+CLEAN_BAGHDADBIT_BENCH = bench/*.gcda bench/*.gcno
+
+CLEANFILES += $(CLEAN_BAGHDADBIT_BENCH)
+
+baghdadbit_bench: $(BENCH_BINARY)
+
+bench: $(BENCH_BINARY) FORCE
+	$(BENCH_BINARY)
+
+baghdadbit_bench_clean : FORCE
+	rm -f $(CLEAN_BAGHDADBIT_BENCH) $(bench_bench_baghdadbit_OBJECTS) $(BENCH_BINARY)

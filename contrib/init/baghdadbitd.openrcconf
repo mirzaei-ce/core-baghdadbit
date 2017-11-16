@@ -1,0 +1,33 @@
+# /etc/conf.d/baghdadbitd: config file for /etc/init.d/baghdadbitd
+
+# Config file location
+#BAGHDADBITD_CONFIGFILE="/etc/baghdadbit/baghdadbit.conf"
+
+# What directory to write pidfile to?  (created and owned by $BAGHDADBITD_USER)
+#BAGHDADBITD_PIDDIR="/var/run/baghdadbitd"
+
+# What filename to give the pidfile
+#BAGHDADBITD_PIDFILE="${BAGHDADBITD_PIDDIR}/baghdadbitd.pid"
+
+# Where to write baghdadbitd data (be mindful that the blockchain is large)
+#BAGHDADBITD_DATADIR="/var/lib/baghdadbitd"
+
+# User and group to own baghdadbitd process
+#BAGHDADBITD_USER="baghdadbit"
+#BAGHDADBITD_GROUP="baghdadbit"
+
+# Path to baghdadbitd executable
+#BAGHDADBITD_BIN="/usr/bin/baghdadbitd"
+
+# Nice value to run baghdadbitd under
+#BAGHDADBITD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BAGHDADBITD_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for baghdadbitd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+BAGHDADBITD_SIGTERM_TIMEOUT=60

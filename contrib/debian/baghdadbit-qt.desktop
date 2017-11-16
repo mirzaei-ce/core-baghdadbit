@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Baghdadbit
+Comment=Baghdadbit P2P Cryptocurrency
+Comment[fr]=Baghdadbit, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Baghdadbit, eşten eşe kriptografik sanal para birimi
+Exec=baghdadbit-qt %u
+Terminal=false
+Type=Application
+Icon=baghdadbit128
+MimeType=x-scheme-handler/baghdadbit;
+Categories=Office;Finance;

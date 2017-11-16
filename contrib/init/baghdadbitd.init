@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  baghdadbitd The baghdadbit core server.
+#
+#
+# chkconfig: 345 80 20
+# description: baghdadbitd
+# processname: baghdadbitd
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/baghdadbitd, see below
+if [ -f /etc/sysconfig/baghdadbitd ]; then
+        . /etc/sysconfig/baghdadbitd
+fi
+
+RETVAL=0
+
+prog=baghdadbitd
+# you can override the lockfile via BAGHDADBITD_LOCKFILE in /etc/sysconfig/baghdadbitd
+lockfile=${BAGHDADBITD_LOCKFILE-/var/lock/subsys/baghdadbitd}
+
+# baghdadbitd defaults to /usr/bin/baghdadbitd, override with BAGHDADBITD_BIN
+baghdadbitd=${BAGHDADBITD_BIN-/usr/bin/baghdadbitd}
+
+# baghdadbitd opts default to -disablewallet, override with BAGHDADBITD_OPTS
+baghdadbitd_opts=${BAGHDADBITD_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $baghdadbitd $baghdadbitd_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
